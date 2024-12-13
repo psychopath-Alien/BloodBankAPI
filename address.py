@@ -4,7 +4,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@127.0.0.1/school'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@127.0.0.1/bloodbank'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] == False
 
 db = SQLAlchemy(app)
@@ -36,17 +36,11 @@ class Address(db.Model):
 
 @app.route("/address", methods=["GET"])
 def get_address():
-    address = db.session.get(Address, id)
-    if not address:
-        return jsonify(
-            {
-                "success": False,
-                "error": "Address not found"
-            }
-        ), 404
-    return jsonify(
+    address = Address.query
+    return jsonify (
         {
             "success": True,
-            "data": address.to_dict()
-        }   
+            "data": [address.to_dict() for add in address]
+        }
     ), 200
+
