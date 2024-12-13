@@ -61,3 +61,51 @@ def get_address(id):
             "data": address.to_dict()
         }
     ), 200
+
+@app.route("/address",  method=['POST'])
+def add_address():
+    if not request.is_json:
+        return jsonify(
+            {
+                "success": False,
+                "error": "Content-type must be application/json"
+            }
+        ), 400
+    data = request.get_json()
+    required_fields = ["building_number", " street", "barangay", "city", "zipcode", "province", "country", "country_details"]
+
+    for field in required_fields:
+        if field not in data:
+            return jsonify(
+                {
+                    "success": False,
+                    "error": f"Missing field: {field}"
+                }
+            ), 400
+    
+    try:
+        new_address = Address(
+            building_number = data["building_number"],
+            street = data["street"], 
+            barangay = data["barangay"],
+            city = data["city"],
+            zipcode = data["zipcode"],
+            province = data["province"],
+            country = data["country"],
+            country_details = data["country_details"]
+        )
+        db.session.add(new_address)
+        db.session.commit()
+    except Exception as  e:
+        return jsonify(
+            {
+                "success": False,
+                "error": str(e)
+            }
+        ), 500
+    return jsonify(
+        {
+            "success": True,
+            "data": new_address.to_dict
+        }
+    ), 201 
