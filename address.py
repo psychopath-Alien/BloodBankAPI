@@ -44,3 +44,20 @@ def get_address():
         }
     ), 200
 
+
+@app.route("/address/<int:id>", methods=['GET'])
+def get_address(id):
+    address = db.session.get(Address, id)
+    if not address:
+        return jsonify(
+            {
+                "success": False,
+                "error": "Address not found"
+            }
+        ), 404
+    return jsonify(
+        {
+            "success": True,
+            "data": address.to_dict()
+        }
+    ), 200
