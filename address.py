@@ -33,3 +33,20 @@ class Address(db.Model):
             "country": self.country,
             "country_details": self.country_details
         }
+
+@app.route("/address", methods=["GET"])
+def get_address():
+    address = db.session.get(Address, id)
+    if not address:
+        return jsonify(
+            {
+                "success": False,
+                "error": "Address not found"
+            }
+        ), 404
+    return jsonify(
+        {
+            "success": True,
+            "data": address.to_dict()
+        }   
+    ), 200
