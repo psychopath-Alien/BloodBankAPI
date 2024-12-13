@@ -1,38 +1,38 @@
-from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+    from flask import Flask, jsonify, request
+    from flask_sqlalchemy import SQLAlchemy
+    from datetime import datetime
 
-app = Flask(__name__)
+    app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@127.0.0.1/bloodbank'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] == False
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@127.0.0.1/bloodbank'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+    db = SQLAlchemy(app)
 
-class Address(db.Model):
-    __tablename__ = 'address'
-    id = db.Column(db.Integer, primary_key=True)
-    building_number = db.Column(db.String(20), nullable=False)
-    street = db.Column(db.String(20), nullable=False)
-    barangay = db.Column(db.String(50), nullable=False)
-    city = db.Column(db.String(50), nullable=False)
-    zipcode = db.Column(db.String(20), nullable=False)
-    province = db.Column(db.String(50), nullable=False)
-    country = db.Column(db.String(50), nulllable=False)
-    country_details = db.Column(db.String(100), nullable=True)
+    class Address(db.Model):
+        __tablename__ = 'address'
+        id = db.Column(db.Integer, primary_key=True)
+        building_number = db.Column(db.String(20), nullable=False)
+        street = db.Column(db.String(20), nullable=False)
+        barangay = db.Column(db.String(50), nullable=False)
+        city = db.Column(db.String(50), nullable=False)
+        zipcode = db.Column(db.String(20), nullable=False)
+        province = db.Column(db.String(50), nullable=False)
+        country = db.Column(db.String(50), nullable=False)
+        country_details = db.Column(db.String(100), nullable=True)
 
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "building_number": self.building_number,
-            "street": self.street,
-            "barangay": self.barangay,
-            "city": self.city,
-            "zipcode": self.zipcode,
-            "province": self.province,
-            "country": self.country,
-            "country_details": self.country_details
-        }
+        def to_dict(self):
+            return {
+                "id": self.id,
+                "building_number": self.building_number,
+                "street": self.street,
+                "barangay": self.barangay,
+                "city": self.city,
+                "zipcode": self.zipcode,
+                "province": self.province,
+                "country": self.country,
+                "country_details": self.country_details
+            }
 
 @app.route("/address", methods=["GET"])
 def get_address():
@@ -72,7 +72,7 @@ def add_address():
             }
         ), 400
     data = request.get_json()
-    required_fields = ["building_number", " street", "barangay", "city", "zipcode", "province", "country", "country_details"]
+    required_fields = ["building_number", "street", "barangay", "city", "zipcode", "province", "country", "country_details"]
 
     for field in required_fields:
         if field not in data:
@@ -109,3 +109,27 @@ def add_address():
             "data": new_address.to_dict
         }
     ), 201 
+
+@app.route("/address/<int:id>", methods=["PUT"])
+def update_address(id):
+    address = db.session.get(Address, id)
+    if not address:
+        return jsonify(
+            {
+                "success": False,
+                "error": "Address not found"
+            }
+        ), 404
+    data = request.get_json()
+    updatable_fields = ["building_number", "street", "barangay", "city", "zipcode", "province", "country", "country_details"]
+
+    for field in updatable_fields:
+        if field in data:
+            setattr(address, field, data[field])
+    db.session.commit()
+     jsonify(
+         {
+             "success": True
+             "data":student.to.dict()
+         }
+     ), 200
