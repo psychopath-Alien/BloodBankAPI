@@ -9,7 +9,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 class MedicalCondition(db.Model):
-    __tablename__='medical_condition'
+    __tablename__='medical_conditions'
     code = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(100), nullable=True)
