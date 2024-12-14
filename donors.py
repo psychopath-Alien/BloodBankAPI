@@ -93,7 +93,7 @@ def add_donor():
            contact = data['contact'],
            BLOOD_BANKS_id = data['BLOOD_BANKS_id'],
            ADDRESS_id = data['ADDRESS_id'],
-           MEDICATIONS_code = data['MEDICATIONS_code']
+           MEDICATIONS_code = data['MEDICATIONS_code'],
            MEDICAL_CONDITIONS_code = data['MEDICAL_CONDITIONS_code']
 
        )
