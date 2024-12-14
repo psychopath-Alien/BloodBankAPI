@@ -9,11 +9,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class Staff(db.Model):
+class Donation(db.Model):
     __tablename__='donations'
     id = db.Column(db.Integer, primary_key=True)
     donation_date = db.Column(db.String(45), nullable=False)
-    ADDRESS_id = db.Column(db.Integer, db.ForeignKey('address.id'), nullable=False)
+    DONORS_id = db.Column(db.Integer, db.ForeignKey('donors.id'), nullable=False)
 
     def to_dict(self):
         return {
@@ -27,3 +27,12 @@ class Staff(db.Model):
             "birthdate": self.birthdate
         }
     
+@app.route("/donation", methods=["GET"])
+def get_all_donation():
+    donations = Donation.query.all()
+    return jsonify(
+        {
+            "success": True,
+            "data": [donate.to_dict() for donate in donations]
+        }
+    ), 200
