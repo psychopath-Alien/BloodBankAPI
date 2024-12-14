@@ -18,7 +18,7 @@ class Staff(db.Model):
     gender = db.Column(db.String(20), nullable=False)
     job_title = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(45), nullable=False)
-    birthdate = db.Column(db.Date, nullable=False)
+    birthdate = db.Column(db.String(45), nullable=False)
 
     def to_dict(self):
         return {
