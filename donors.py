@@ -17,7 +17,9 @@ class Donors(db.Model):
     name = db.Column(db.String(50), nullable=False)
     contact = db.Column(db.String(45), nullable=False)
     BLOOD_BANKS_id = db.Column(db.Integer, db.ForeignKey('donors.id'), nullable=False)
-
+    MEDICATIONS_code = db.Column(db.Integer, db.ForeignKey('medications.code'), nullable=False)
+    MEDICAL_CONDITIONS_code = db.Column(db.Integer, db.ForeignKey('medical_conditions.code'), nullable=False)
+    
     def to_dict(self):
         return {
             "id": self.id,
@@ -26,7 +28,7 @@ class Donors(db.Model):
             "name":  self.name,
             "contact": self.contact,
             "BLOOD_BANKS_id": self.BLOOD_BANKS_id,
-            
+
 
         }
     
