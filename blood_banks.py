@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLACHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost/bloodbank'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost/bloodbank'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -11,13 +11,13 @@ db = SQLAlchemy(app)
 class BloodBanks(db.Model):
     __tablename__ = 'blood_banks'
     id = db.Column(db.Integer, primary_key=True)
-    blood_banks_details = db.Column(db.String(100), nullable=True)
+    blood_bank_details = db.Column(db.String(100), nullable=True)
     ADDRESS_id = db.Column(db.Integer, db.ForeignKey('address.ADDRESS_id'), nullable=False)
 
     def to_dict(self):
         return {
             "id": self.id, 
-            "blood_banks_details": self.blood_banks_details,
+            "blood_bank_details": self.blood_bank_details,
             "ADDRESS_id": self.ADDRESS_id
         }
 
@@ -63,7 +63,7 @@ def add_bloodbank():
     if not data:
         return jsonify({"success": False, "error": "Invalid JSON"}), 400
 
-    required_fields = ["id", "blood_banks_details", "ADDRESS_id"]
+    required_fields = ["id", "blood_bank_details", "ADDRESS_id"]
     for field in required_fields:
         if field not in data:
             return jsonify(
