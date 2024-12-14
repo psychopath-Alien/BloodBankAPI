@@ -63,7 +63,7 @@ def add_bloodbank():
     if not data:
         return jsonify({"success": False, "error": "Invalid JSON"}), 400
 
-    required_fields = ["id", "blood_bank_details", "ADDRESS_id"]
+    required_fields = ["blood_bank_details", "ADDRESS_id"]
     for field in required_fields:
         if field not in data:
             return jsonify(
@@ -130,7 +130,7 @@ def delete_bloodbanks(id):
         return jsonify(
             {
                 "success": False,
-                "error": "Address not found"
+                "error": "Nlood Bank not found"
             }
         ), 404
 
