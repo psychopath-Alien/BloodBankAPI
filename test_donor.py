@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch
 from flask import json
-from donors import app, db, Donors
+from donors import app, Donors
 
 @pytest.fixture
 def client():
